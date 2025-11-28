@@ -4,245 +4,154 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Przygoda u Hobbita — Wycieczki</title>
-
-  <style>
-  /* Twój oryginalny styl + drobne poprawki dla warstw (z-index) */
-  body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Georgia', serif;
-    color: #fff;
-    text-align: center;
-    background: #000;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-  }
-
-  /* kontener dla tła Vanta */
-  #vanta-bg {
-    position: fixed;
-    inset: 0;              /* top:0; right:0; bottom:0; left:0; */
-    z-index: 0;            /* tło — na spodzie */
-    pointer-events: none;  /* żeby tło nie blokowało kliknięć */
-  }
-
-  /* Główny wrapper treści - nad tłem */
-  .site-wrapper {
-    position: relative;
-    z-index: 1; /* ważne: treść nad canvasem Vanta */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  header {
-    padding: 20px;
-    background: rgba(0,0,0,0.5);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 2.6rem;
-  }
-
-  nav {
-    margin-top: 10px;
-  }
-
-  nav a {
-    margin: 0 12px;
-    color: #ffd700;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-  }
-
-  section {
-    padding: 60px 20px;
-    background: rgba(0,0,0,0.3);
-  }
-
-  section:nth-child(even) {
-    background: rgba(0,0,0,0.5);
-  }
-
-  .prices {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-
-  .card {
-    background: rgba(255,255,255,0.06);
-    padding: 18px;
-    border-radius: 12px;
-    min-width: 200px;
-    max-width: 320px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,215,0,0.08);
-  }
-
-  .card h3 { margin: 0 0 8px 0; font-size: 1.2rem; color: #fff; }
-  .card p { margin: 6px 0; color: #eee; }
-  .price { font-weight: bold; color: #ffd700; font-size: 1.25rem; margin-top: 8px; }
-
-  .images {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-  }
-
-  .images img {
-    width: 300px;
-    border: 3px solid #fff;
-    border-radius: 10px;
-    max-width: 90%;
-    height: auto;
-  }
-
-  footer {
-    padding: 18px;
-    background: rgba(0,0,0,0.5);
-    font-size: 0.95rem;
-  }
-
-  /* Przycisk (dodany zgodnie z prośbą) */
-  .signup-btn {
-    background: #ffd700;
-    color: #000;
-    padding: 12px 22px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: 0.3s;
-    margin-bottom: 12px;
-  }
-
-  .signup-btn:hover {
-    background: #ffea4d;
-    transform: scale(1.05);
-  }
-
-  /* Jeśli Vanta dodaje canvas z klasą vanta-canvas, upewniamy się, że jest pod treścią */
-  canvas.vanta-canvas {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-  }
-
-  @media (max-width: 800px) {
-    header h1 { font-size: 1.9rem; }
-    nav a { margin: 0 8px; font-size: 0.95rem; }
-    section { padding: 36px 16px; }
-    .card { min-width: 160px; }
-  }
-
-  @media (max-width: 420px) {
-    header h1 { font-size: 1.6rem; }
-    nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-    nav a { font-size: 0.88rem; }
-    .images img { width: 100%; max-width: 360px; }
-    .prices { flex-direction: column; align-items: center; }
-  }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <!-- oddzielny element dla tła Vanta -->
-  <div id="vanta-bg"></div>
 
-  <!-- wrapper z treścią nad tłem -->
-  <div class="site-wrapper">
-    <header>
-      <h1>Przygoda u Hobbita</h1>
-      <nav>
-        <a href="#oferta">Oferta</a>
-        <a href="#program">Program</a>
-      </nav>
-    </header>
+  <!-- HEADER -->
+  <header>
+    <h1>Przygoda u Hobbita</h1>
+    <nav>
+      <a href="#oferta">Oferta</a>
+      <a href="#program">Program</a>
+    </nav>
 
-    <main>
-      <section id="oferta">
-        <h2>Opis wycieczki — pakiety</h2>
-        <p>Wybierz pakiet dopasowany do Twojej przygody. Ceny podane w złotych monetach.</p>
+    <button class="open-modal" type="button">Rezerwuj wycieczkę</button>
+  </header>
 
-        <div class="prices">
-          <div class="card">
-            <h3>Zwykła wycieczka</h3>
-            <p>Spokojny spacer po hobbickich wzgórzach, wizyta przy okrągłych drzwiach i podstawowe atrakcje.</p>
-            <div class="price">30 złotych monet</div>
-          </div>
+  <!-- MAIN -->
+  <main>
 
-          <div class="card">
-            <h3>Wycieczka z przewodnikiem</h3>
-            <p>Dołącz do przewodnika, który opowie legendy, pokaże sekrety wioski i miejsca niedostępne dla innych.</p>
-            <div class="price">40 złotych monet</div>
-          </div>
+    <!-- OFERTA -->
+    <section id="oferta">
+      <h2>Opis wycieczki — pakiety</h2>
+      <p>Wybierz pakiet dopasowany do Twojej przygody. Ceny podane w złotych monetach.</p>
 
-          <div class="card">
-            <h3>Wycieczka VIP</h3>
-            <p>Przewodnik, tradycyjny posiłek z kuchni Hobbita oraz wstęp do hobbickiego ZOO — pełna, całodzienna przygoda.</p>
-            <div class="price">50 złotych monet</div>
-          </div>
-        </div>
-      </section>
+      <div class="prices">
 
-      <section id="program">
-        <h2>Co będziemy robić na wycieczce?</h2>
-        <p>Oto przykładowy plan i atrakcje — zależnie od wybranego pakietu program może być rozszerzony.</p>
-
-        <div class="card" style="display:inline-block; margin-top:16px;">
-          <h3>Plan dnia</h3>
-          <p><strong>Start:</strong> Spotykamy się przy głównej bramie wioski.</p>
-          <p><strong>Spacer:</strong> Przechadzka po pagórkowatych ścieżkach, podziwianie krajobrazów i hobbickich chat.</p>
-          <p><strong>Wnętrze norki:</strong> Zajrzymy do domu Hobbita — okrągłe drzwi, przytulna kuchnia i salon.</p>
-          <p><strong>Targ i smakołyki:</strong> Na targu można zobaczyć rękodzieło i spróbować przekąsek.</p>
-          <p><strong>Opowieści:</strong> Przewodnik (40 i VIP) opowie o Bilbie, Frodo i dawnych przygodach.</p>
-          <p><strong>Gospoda:</strong> Wersja VIP obejmuje tradycyjny posiłek.</p>
-          <p><strong>ZOO:</strong> Wersja VIP — wizyta w hobbickim ZOO.</p>
+        <div class="card">
+          <h3>Zwykła wycieczka</h3>
+          <p>Spokojny spacer po hobbickich wzgórzach, wizyta przy okrągłych drzwiach i podstawowe atrakcje.</p>
+          <div class="price">30 złotych monet</div>
         </div>
 
-        <p style="margin-top:14px; color:#ffd;">Na koniec krótkie podsumowanie i możliwość zakupienia pamiątek.</p>
-      </section>
-    </main>
+        <div class="card">
+          <h3>Wycieczka z przewodnikiem</h3>
+          <p>Dołącz do przewodnika, który opowie legendy, pokaże sekrety wioski i miejsca niedostępne dla innych.</p>
+          <div class="price">40 złotych monet</div>
+        </div>
 
-    <footer>
-      <!-- DODANY PRZYCISK (nad napisem o autorze) -->
-      <button class="signup-btn">Zapisz się już dziś!</button>
+        <div class="card">
+          <h3>Wycieczka VIP</h3>
+          <p>Przewodnik, tradycyjny posiłek z kuchni Hobbita oraz wstęp do hobbickiego ZOO — pełna, całodzienna przygoda.</p>
+          <div class="price">50 złotych monet</div>
+        </div>
 
-      <p>Ta strona była stworzona przez Tigrana Senia</p>
-    </footer>
+      </div>
+    </section>
+
+    <!-- PROGRAM -->
+    <section id="program">
+      <h2>Co będziemy robić na wycieczce?</h2>
+      <p>Oto przykładowy plan i atrakcje — zależnie od wybranego pakietu program może być rozszerzony.</p>
+
+      <div class="card" style="display:inline-block; margin-top:16px;">
+        <h3>Plan dnia</h3>
+        <p><strong>Start:</strong> Spotykamy się przy głównej bramie wioski.</p>
+        <p><strong>Spacer:</strong> Przechadzka po pagórkowatych ścieżkach.</p>
+        <p><strong>Wnętrze norki:</strong> Zajrzymy do domu Hobbita.</p>
+        <p><strong>Targ i smakołyki:</strong> Możliwość zakupu przekąsek.</p>
+        <p><strong>Opowieści:</strong> Legendy o Bilbie i Frodo.</p>
+        <p><strong>Gospoda:</strong> Tradycyjny posiłek (VIP).</p>
+        <p><strong>ZOO:</strong> Spotkanie magicznych stworzeń (VIP).</p>
+      </div>
+
+      <p style="margin-top:14px; color:#ffd;">Na koniec krótka możliwość zakupienia pamiątek.</p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Ta strona była stworzona przez Tigrana Senia</p>
+  </footer>
+
+  <!-- MODAL — WYŚRODKOWANY -->
+  <div id="bookingModal" class="modal" hidden role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-content" role="document">
+      <button class="modal-close" aria-label="Zamknij">×</button>
+
+      <h2 id="modalTitle">Rezerwacja wycieczki</h2>
+      <p>Wybierz pakiet:</p>
+
+      <div class="modal-options">
+        <button class="option-btn" type="button">Zwykła wycieczka – 30 zł</button>
+        <button class="option-btn" type="button">Wycieczka z przewodnikiem – 40 zł</button>
+        <button class="option-btn" type="button">Wycieczka VIP – 50 zł</button>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Vanta.js tło -->
+  <!-- VANTA BACKGROUND -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.fog.min.js"></script>
   <script>
-    /* upewniamy się, że VANTA zostanie podpięte do #vanta-bg (nie do całego body) */
-    if (typeof VANTA !== 'undefined') {
-      VANTA.FOG({
-        el: "#vanta-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        highlightColor: 0xffcc00,
-        midtoneColor: 0x336633,
-        lowlightColor: 0x222222,
-        baseColor: 0x112233
-      });
-    }
+    VANTA.FOG({
+      el: document.body,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      highlightColor: 0xffcc00,
+      midtoneColor: 0x336633,
+      lowlightColor: 0x222222,
+      baseColor: 0x112233
+    });
   </script>
+
+  <!-- SKRYPT MODALA Z POTWIERDZENIEM ZAKUPU -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("bookingModal");
+      const openBtn = document.querySelector(".open-modal");
+      const modalContent = modal.querySelector(".modal-content");
+
+      // Otwórz modal
+      openBtn.addEventListener("click", () => {
+        modal.hidden = false;
+      });
+
+      // Zamknij klikając X
+      modal.addEventListener("click", (e) => {
+        if (e.target.classList.contains("modal-close")) {
+          modal.hidden = true;
+        }
+      });
+
+      // Zamknij klikając poza modalem
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.hidden = true;
+        }
+      });
+
+      // Po kliknięciu w jedną z opcji — pokaż "Dziękujemy"
+      modal.addEventListener("click", (e) => {
+        if (e.target.classList.contains("option-btn")) {
+
+          modalContent.innerHTML = `
+            <button class="modal-close" aria-label="Zamknij">×</button>
+            <h2>Dziękujemy za rezerwację! 🧙‍♂️</h2>
+            <p>Bilet został pomyślnie zamówiony.</p>
+          `;
+        }
+      });
+
+    });
+  </script>
+
 </body>
 </html>
