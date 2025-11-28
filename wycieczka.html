@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Przygoda u Hobbita — Wycieczki</title>
-  <!-- Styl jest wbudowany tutaj; możesz przenieść zawartość <style> do osobnego pliku style.css -->
+
   <style>
-  /* Podstawowy styl zgodny z podanym CSS, plus responsywne poprawki */
+  /* Twój oryginalny styl + drobne poprawki dla warstw (z-index) */
   body, html {
     margin: 0;
     padding: 0;
@@ -17,6 +17,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+  }
+
+  /* kontener dla tła Vanta */
+  #vanta-bg {
+    position: fixed;
+    inset: 0;              /* top:0; right:0; bottom:0; left:0; */
+    z-index: 0;            /* tło — na spodzie */
+    pointer-events: none;  /* żeby tło nie blokowało kliknięć */
+  }
+
+  /* Główny wrapper treści - nad tłem */
+  .site-wrapper {
+    position: relative;
+    z-index: 1; /* ważne: treść nad canvasem Vanta */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   header {
@@ -97,7 +114,33 @@
     font-size: 0.95rem;
   }
 
-  /* Responsywność */
+  /* Przycisk (dodany zgodnie z prośbą) */
+  .signup-btn {
+    background: #ffd700;
+    color: #000;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-bottom: 12px;
+  }
+
+  .signup-btn:hover {
+    background: #ffea4d;
+    transform: scale(1.05);
+  }
+
+  /* Jeśli Vanta dodaje canvas z klasą vanta-canvas, upewniamy się, że jest pod treścią */
+  canvas.vanta-canvas {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+  }
+
   @media (max-width: 800px) {
     header h1 { font-size: 1.9rem; }
     nav a { margin: 0 8px; font-size: 0.95rem; }
@@ -115,73 +158,80 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Przygoda u Hobbita</h1>
-    <nav>
-      <a href="#oferta">Oferta</a>
-      <a href="#program">Program</a>
-      
-    </nav>
-  </header>
+  <!-- oddzielny element dla tła Vanta -->
+  <div id="vanta-bg"></div>
 
-  <main>
-    <section id="oferta">
-      <h2>Opis wycieczki — pakiety</h2>
-      <p>Wybierz pakiet dopasowany do Twojej przygody. Ceny podane w złotych monetach.</p>
+  <!-- wrapper z treścią nad tłem -->
+  <div class="site-wrapper">
+    <header>
+      <h1>Przygoda u Hobbita</h1>
+      <nav>
+        <a href="#oferta">Oferta</a>
+        <a href="#program">Program</a>
+      </nav>
+    </header>
 
-      <div class="prices">
-        <div class="card">
-          <h3>Zwykła wycieczka</h3>
-          <p>Spokojny spacer po hobbickich wzgórzach, wizyta przy okrągłych drzwiach i podstawowe atrakcje.</p>
-          <div class="price">30 złotych monet</div>
+    <main>
+      <section id="oferta">
+        <h2>Opis wycieczki — pakiety</h2>
+        <p>Wybierz pakiet dopasowany do Twojej przygody. Ceny podane w złotych monetach.</p>
+
+        <div class="prices">
+          <div class="card">
+            <h3>Zwykła wycieczka</h3>
+            <p>Spokojny spacer po hobbickich wzgórzach, wizyta przy okrągłych drzwiach i podstawowe atrakcje.</p>
+            <div class="price">30 złotych monet</div>
+          </div>
+
+          <div class="card">
+            <h3>Wycieczka z przewodnikiem</h3>
+            <p>Dołącz do przewodnika, który opowie legendy, pokaże sekrety wioski i miejsca niedostępne dla innych.</p>
+            <div class="price">40 złotych monet</div>
+          </div>
+
+          <div class="card">
+            <h3>Wycieczka VIP</h3>
+            <p>Przewodnik, tradycyjny posiłek z kuchni Hobbita oraz wstęp do hobbickiego ZOO — pełna, całodzienna przygoda.</p>
+            <div class="price">50 złotych monet</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="program">
+        <h2>Co będziemy robić na wycieczce?</h2>
+        <p>Oto przykładowy plan i atrakcje — zależnie od wybranego pakietu program może być rozszerzony.</p>
+
+        <div class="card" style="display:inline-block; margin-top:16px;">
+          <h3>Plan dnia</h3>
+          <p><strong>Start:</strong> Spotykamy się przy głównej bramie wioski.</p>
+          <p><strong>Spacer:</strong> Przechadzka po pagórkowatych ścieżkach, podziwianie krajobrazów i hobbickich chat.</p>
+          <p><strong>Wnętrze norki:</strong> Zajrzymy do domu Hobbita — okrągłe drzwi, przytulna kuchnia i salon.</p>
+          <p><strong>Targ i smakołyki:</strong> Na targu można zobaczyć rękodzieło i spróbować przekąsek.</p>
+          <p><strong>Opowieści:</strong> Przewodnik (40 i VIP) opowie o Bilbie, Frodo i dawnych przygodach.</p>
+          <p><strong>Gospoda:</strong> Wersja VIP obejmuje tradycyjny posiłek.</p>
+          <p><strong>ZOO:</strong> Wersja VIP — wizyta w hobbickim ZOO.</p>
         </div>
 
-        <div class="card">
-          <h3>Wycieczka z przewodnikiem</h3>
-          <p>Dołącz do przewodnika, który opowie legendy, pokaże sekrety wioski i miejsca niedostępne dla innych.</p>
-          <div class="price">40 złotych monet</div>
-        </div>
+        <p style="margin-top:14px; color:#ffd;">Na koniec krótkie podsumowanie i możliwość zakupienia pamiątek.</p>
+      </section>
+    </main>
 
-        <div class="card">
-          <h3>Wycieczka VIP</h3>
-          <p>Przewodnik, tradycyjny posiłek z kuchni Hobbita oraz wstęp do hobbickiego ZOO — pełna, całodzienna przygoda.</p>
-          <div class="price">50 złotych monet</div>
-        </div>
-      </div>
-    </section>
+    <footer>
+      <!-- DODANY PRZYCISK (nad napisem o autorze) -->
+      <button class="signup-btn">Zapisz się już dziś!</button>
 
-    <section id="program">
-      <h2>Co będziemy robić na wycieczce?</h2>
-      <p>Oto przykładowy plan i atrakcje — zależnie od wybranego pakietu program może być rozszerzony.</p>
+      <p>Ta strona była stworzona przez Tigrana Senia</p>
+    </footer>
+  </div>
 
-      <div class="card" style="display:inline-block; margin-top:16px;">
-        <h3>Plan dnia</h3>
-        <p><strong>Start:</strong> Spotykamy się przy głównej bramie wioski.</p>
-        <p><strong>Spacer:</strong> Przechadzka po pagórkowatych ścieżkach, podziwianie krajobrazów i hobbickich chat.</p>
-        <p><strong>Wnętrze norki:</strong> Zajrzymy do domu Hobbita — okrągłe drzwi, przytulna kuchnia i salon.</p>
-        <p><strong>Targ i smakołyki:</strong> Na targu można zobaczyć rękodzieło i spróbować przekąsek (część pakietów).</p>
-        <p><strong>Opowieści:</strong> Przewodnik (w pakiecie 40 i VIP) opowie o Bilbie, Frodo i dawnych przygodach.</p>
-        <p><strong>Gospoda:</strong> W wersji VIP zatrzymujemy się na tradycyjny posiłek.</p>
-        <p><strong>ZOO:</strong> VIP obejmuje wizytę w hobbickim ZOO — spotkamy puszyste długousy i inne niespotykane stworzenia.</p>
-      </div>
-
-      <p style="margin-top:14px; color:#ffd;">Na koniec krótkie podsumowanie i możliwość zakupienia pamiątek.</p>
-    </section>
-
-    
-  </main>
-
-  <footer>
-    <p>Ta strona była stworzona przez Tigrana Senia</p>
-  </footer>
-
-  <!-- Vanta.js tło - zachowano z oryginalnego kodu -->
+  <!-- Vanta.js tło -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.fog.min.js"></script>
   <script>
+    /* upewniamy się, że VANTA zostanie podpięte do #vanta-bg (nie do całego body) */
     if (typeof VANTA !== 'undefined') {
       VANTA.FOG({
-        el: "body",
+        el: "#vanta-bg",
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
